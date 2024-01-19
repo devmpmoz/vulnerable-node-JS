@@ -1,13 +1,27 @@
-name: Example workflow for Node using Snyk
-on: push
+name: DevSecpOps Pipeline
+on:
+  push:
+    branches:
+      - main
 jobs:
-  security:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Run npm install dependencies
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
         run: npm install
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run static code analytics (ESLint)
+        run: npm run lint
+      - name: Run security scan (NPM Audit)
+        run: npm audit
+        
