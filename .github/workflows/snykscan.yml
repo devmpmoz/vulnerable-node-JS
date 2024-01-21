@@ -1,4 +1,4 @@
-name: Snyk Scan
+name: Snyk Scan Node JS code
 
 on:
   push:
